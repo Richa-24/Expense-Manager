@@ -1,36 +1,37 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { TextField, Button } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
+import { postUserLogin } from '../Redux/actions'
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props)
+export default function Login() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const dispatch = useDispatch()
+    const isAuth = useSelector((state) => state.auth.isAuth)
 
-        this.state = {
-            email: "",
-            password: ""
-        }
+    const handleLogin = () => {
+        dispatch(postUserLogin({ email, password }))
     }
 
-    render() {
-        const { email, password } = this.state
-        return (
-            <>
-                <h1>Login</h1>
-                <input type="email" value={email} name="" onChange={} />
-                <input type="password" value={password} name="" onChange={} />
-            </>
-        )
-    }
+    return (
+        <>
+            {isAuth ? <Redirect to="/Dashboard" /> :
+                <>
+                    <h1>Login</h1>
+                    <form noValidate autoComplete="off">
+                        <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={(e) => (setEmail(e.target.value))} />
+                        <TextField id="outlined-basic" label="Password" variant="outlined" value={password} onChange={(e) => (setPassword(e.target.value))} />
+                    </form>
+                    <div><Button variant="contained" onClick={handleLogin}>Login</Button></div>
+                </>
+            }
+        </>
+    )
 }
 
-const mapStateToProps = (state) => {
-    return {
 
-    }
-}
 
-const mapDispatchToProps = (dispatch) => ({
 
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+
