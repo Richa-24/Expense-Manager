@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const authRoutes = require('./routes/authRoutes')
+const transactionRoutes = require('./routes/transactionRoutes')
 
 const app = express()
 
@@ -17,6 +18,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useCreateIndex:
 })
 
 app.use('/api/user', authRoutes)
+app.use('/api/transactions', transactionRoutes)
 
 app.listen(8000, () => {
   console.log('Server is up and running at port 8000')
