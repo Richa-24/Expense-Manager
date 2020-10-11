@@ -2,15 +2,16 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Typography, Button, Card, CardActions } from '@material-ui/core';
-import { postUserLogin } from '../Redux/actions'
+import { postUserLogin } from '../Redux/auth/actions'
 import { Redirect } from 'react-router-dom'
 import swal from 'sweetalert'
 
 const useStyles = makeStyles({
     root: {
         maxWidth: 400,
-        marginLeft: 550,
-        marginTop: 150
+        margin: '2rem auto',
+        display: 'flex',
+        flexDirection: 'column'
     },
 });
 
