@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { TextField, Typography, Card, CardActions, Button } from '@material-ui/core';
 import { Redirect } from 'react-router-dom'
-import { postUserSignup } from '../Redux/actions'
+import { postUserSignup } from '../Redux/auth/actions'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -21,10 +21,10 @@ export default function SignUp() {
     const dispatch = useDispatch()
     const register = useSelector((state) => state.auth.register)
 
-
     const handleSignup = () => {
         dispatch(postUserSignup({ name, email, password }))
     }
+    
     return (
         <>
             {register ? (<Redirect to="/login" />) : (
