@@ -23,7 +23,7 @@ const loginValidator = data => {
 
 const registerController = async (req, res) => {
   const validationError = registerValidator(req.body)
-  if (validationError.error) return res.json({ message: validationError.error.details[0].message })
+  if (validationError.error) return res.status(400).json({ message: validationError.error.details[0].message })
 
   const { name, email, password } = req.body
 
