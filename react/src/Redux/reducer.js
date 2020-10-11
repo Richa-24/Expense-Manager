@@ -22,5 +22,27 @@ export default (state = initState, action) => {
             return {
                 isLoading: false
             }
+
+
+
+
+        case actionConstants.FETCH_TRANSACTION_REQUEST:
+            return {
+                isLoading: true
+            }
+
+        case actionConstants.FETCH_TRANSACTION_SUCCESS:
+            return {
+                isLoading: false,
+                transactions_data: action.payload
+            }
+
+        case actionConstants.POST_NEW_TRANSACTION_FAILURE:
+            return {
+                isLoading: false
+            }
+
+        default:
+            return state
     }
 }

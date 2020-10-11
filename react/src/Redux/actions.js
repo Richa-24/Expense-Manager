@@ -1,5 +1,6 @@
 import * as actionConstant from './actionTypes'
 import axios from 'axios'
+import swal from 'sweetalert'
 
 export const signupRequest = (payload) => ({
     type: actionConstant.SIGNUP_REQUEST,
@@ -30,8 +31,12 @@ export const postUserSignup = (payload) => (dispatch) => {
         .then((res) => {
             console.log(res)
             dispatch(signupSuccess(res))
+            swal("Congratulations!", "Registration Successfull", "success")
         })
-        .catch((err) => dispatch(signupFailure(err)))
+        .catch((err) => {
+            dispatch(signupFailure(err))
+            swal("Oops!", "Something went wrong!", "warning")
+        })
 }
 
 
@@ -64,7 +69,10 @@ export const postUserLogin = (payload) => (dispatch) => {
             console.log(res)
             dispatch(loginSuccess(res))
         })
-        .catch((err) => dispatch(loginFailure(err)))
+        .catch((err) => {
+            swal("Oops!", "Something went wrong!", "warning")
+            dispatch(loginFailure(err))
+        })
 }
 
 

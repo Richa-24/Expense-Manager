@@ -1,10 +1,21 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { TextField, Button } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { TextField, Typography, Button, Card, CardActions } from '@material-ui/core';
 import { postUserLogin } from '../Redux/actions'
+import { Redirect } from 'react-router-dom'
+import swal from 'sweetalert'
+
+const useStyles = makeStyles({
+    root: {
+        maxWidth: 400,
+        marginLeft: 550,
+        marginTop: 150
+    },
+});
 
 export default function Login() {
+    const classes = useStyles();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const dispatch = useDispatch()
@@ -12,26 +23,32 @@ export default function Login() {
 
     const handleLogin = () => {
         dispatch(postUserLogin({ email, password }))
+        swal("Congratulations!", "Login Successfull", "success")
     }
 
     return (
         <>
-            {isAuth ? <Redirect to="/Dashboard" /> :
-                <>
-                    <h1>Login</h1>
-                    <form noValidate autoComplete="off">
-                        <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={(e) => (setEmail(e.target.value))} />
-                        <TextField id="outlined-basic" label="Password" variant="outlined" value={password} onChange={(e) => (setPassword(e.target.value))} />
-                    </form>
-                    <div><Button variant="contained" onClick={handleLogin}>Login</Button></div>
-                </>
-            }
+            {isAuth ? (<Redirect to="/Dashboard" />) : (
+
+                <Card className={classes.root}>
+
+                    <Typography gutterBottom variant="h3" component="h2"> <h4>Login</h4></Typography>
+
+                    <CardActions>
+
+                        <form noValidate autoComplete="off">
+                            <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={(e) => (setEmail(e.target.value))} />
+                            <TextField id="outlined-basic" label="Password" variant="outlined" value={password} onChange={(e) => (setPassword(e.target.value))} />
+                            <div><Button variant="contained" onClick={handleLogin}>Login</Button></div>
+                        </form>
+
+                    </CardActions>
+                </Card>
+
+            )}
         </>
-    )
+    );
 }
-
-
-
 
 
 
