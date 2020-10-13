@@ -35,11 +35,6 @@ export default (state = initState, action) => {
                 transactions_data: action.payload
             }
 
-        case actionTypes.POST_NEW_TRANSACTION_FAILURE:
-            return {
-                isLoading: false
-            }
-
         default:
             return state
     }
