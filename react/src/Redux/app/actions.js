@@ -32,8 +32,7 @@ export const postUserTransactions = (payload) => (dispatch) => {
     }
   )
     .then((res) => {
-      console.log(res)
-      dispatch(postTransactionSuccess(res))
+      dispatch(postTransactionSuccess(res.data))
     })
     .catch((err) => dispatch(postTransactionFailure(err)))
 }
@@ -54,7 +53,6 @@ export const fetchTransactionFailure = (payload) => ({
 })
 
 export const fetchUserTransactions = (payload) => (dispatch) => {
-  console.log(payload)
   dispatch(fetchTransactionRequest(payload))
   return api.get("transactions/",
     {
@@ -67,8 +65,6 @@ export const fetchUserTransactions = (payload) => (dispatch) => {
     }
   )
     .then((res) => {
-      console.log(res)
-      console.log(res.data.results)
       dispatch(fetchTransactionSuccess(res.data.results))
     })
     .catch((err) => dispatch(fetchTransactionFailure(err)))

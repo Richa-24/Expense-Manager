@@ -11,6 +11,8 @@ import Paper from '@material-ui/core/Paper';
 import { Box, Typography, TextField, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Button } from '@material-ui/core';
 import { postUserTransactions } from '../Redux/app/actions'
 import { fetchUserTransactions } from '../Redux/app/actions'
+import * as timeAgo from 'timeago.js';
+import api from '../utils/api';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -92,13 +94,28 @@ export default function Dashboard() {
 
     let user_id = useSelector((state) => state.auth.user_id)
     let transactions_data = useSelector((state) => state.app.transactions_data) || []
-    console.log(transactions_data)
 
     useEffect(() => {
         let user_id = localStorage.getItem("auth")
-        console.log(user_id)
         dispatch(fetchUserTransactions(user_id))
     }, [])
+
+
+    const getSummary = () => {
+        api.get('/transactions/summary',
+            {
+                headers: {
+                    user_id: localStorage.getItem("auth")
+                }
+            }).then(({ data }) => {
+                setIncome(data.totalAmount)
+                setBalance(data.balance)
+                setExpense(data.expense)
+            })
+    }
+    useEffect(() => {
+        getSummary()
+    }, [transactions_data])
 
     const handleAdd = () => {
         let item = {
@@ -111,9 +128,10 @@ export default function Dashboard() {
         console.log(item)
     }
     return (
-        <>
-            <h1>Welcome to Dashboard!</h1>
-
+        <>  
+        <Typography style={{marginTop: '10px'}} variant='h4' component='h4'>
+            Dashboard
+        </Typography>
             <Box className={classes.topRow}>
                 <Box className={classes.total}>
                     <Typography variant="h5" className={classes.title}>
@@ -159,14 +177,14 @@ export default function Dashboard() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <StyledTableRow key={row.name}>
+                        {transactions_data.map((row) => (
+                            <StyledTableRow key={row._id}>
                                 <StyledTableCell component="th" scope="row">
-                                    {row.name}
+                                    {row.title}
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                                <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
+                                <StyledTableCell align="right">{row.type === "C" ? "Credit" : "Debit"}</StyledTableCell>
+                                <StyledTableCell align="right">{row.amount}</StyledTableCell>
+                                <StyledTableCell align="right">{timeAgo.format(row.timestamp)}</StyledTableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>

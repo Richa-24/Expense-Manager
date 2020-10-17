@@ -19,7 +19,7 @@ export default function DisabledTabs() {
         user_id: localStorage.getItem('auth')
       },
       params: {
-        page, filter
+        page, filter, limit: 10
       }
     }).then(({ data }) => {
       setLoading(false)
