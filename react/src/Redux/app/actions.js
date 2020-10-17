@@ -20,14 +20,15 @@ export const postUserTransactions = (payload) => (dispatch) => {
   dispatch(postTransactionRequest(payload))
   return api.post("/transactions",
     {
+      "title": payload.title,
+      "type": payload.type,
+      "amount": payload.amount
+    },
+    {
       headers: {
-        'user_id': payload
+        'user_id': payload.user_id
       },
-      data: {
-        "title": payload.salary,
-        "type": payload.type,
-        "amount": payload.amount
-      }
+
     }
   )
     .then((res) => {
@@ -53,17 +54,22 @@ export const fetchTransactionFailure = (payload) => ({
 })
 
 export const fetchUserTransactions = (payload) => (dispatch) => {
+  console.log(payload)
   dispatch(fetchTransactionRequest(payload))
   return api.get("transactions/",
     {
       headers: {
         'user_id': payload
+      },
+      params: {
+        limit: 5
       }
     }
   )
     .then((res) => {
       console.log(res)
-      dispatch(fetchTransactionSuccess(res))
+      console.log(res.data.results)
+      dispatch(fetchTransactionSuccess(res.data.results))
     })
     .catch((err) => dispatch(fetchTransactionFailure(err)))
 }
