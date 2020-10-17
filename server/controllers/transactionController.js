@@ -76,7 +76,7 @@ const paginate = async (model, { filter, limit, page }) => {
     query = {}
   }
 
-  res.results = await model.find(query).skip(startIndex).limit(limit)
+  res.results = await model.find(query).sort({ timestamp: -1 }).skip(startIndex).limit(limit)
 
   return res
 }
