@@ -4,12 +4,17 @@ import React from 'react';
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 400,
-    margin: '2rem auto',
+    margin: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    fontSize:'18px', 
 
     '& > *': {
       margin: '0.5rem 0'
+    },
+
+    '& button, & a': {
+      fontSize: '1.1rem'
     }
   }
 }))
