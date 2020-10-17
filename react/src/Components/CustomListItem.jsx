@@ -3,22 +3,23 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { Box, Card, ListItemSecondaryAction, makeStyles } from '@material-ui/core';
+import * as timeago from 'timeago.js'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: '1rem'
+    padding: '0.5rem 1rem'
   },
   texts: {
     display: 'flex',
     flexDirection: 'column'
   },
   amount: {
-    fontSize: '18px'
+    fontSize: '16px'
   }
 }))
 
 
-const CustomListItem = ({ _id, type, title, amount }) => {
+const CustomListItem = ({ _id, type, title, timestamp, amount }) => {
   const classes = useStyles()
   return (
     <ListItem>
@@ -33,8 +34,11 @@ const CustomListItem = ({ _id, type, title, amount }) => {
             </Typography>
           </ListItemText>
           <ListItemSecondaryAction style={{ marginRight: '10px' }} className={classes.amount}>
-            <Typography variant='h6' color={type==='C'? 'primary': 'secondary'}>
+            <Typography variant='h6' color={type === 'C' ? 'primary' : 'secondary'}>
               {type === 'C' ? '+$' + amount : '-$' + amount}
+            </Typography>
+            <Typography>
+              {timeago.format(timestamp)}
             </Typography>
           </ListItemSecondaryAction>
         </Card>
