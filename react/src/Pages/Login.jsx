@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { TextField, Typography, Button } from '@material-ui/core';
+import { TextField, Typography, Button, Box } from '@material-ui/core';
 import { postUserLogin } from '../Redux/auth/actions'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Form from '../Components/Form';
 
 export default function Login() {
@@ -19,10 +19,16 @@ export default function Login() {
 
     return (
         <Form>
-            <Typography gutterBottom variant="h3" component="h2"> <h4>Login</h4></Typography>
+            <Typography gutterBottom variant="h3"> Login </Typography>
             <TextField id="outlined-basic" label="Email" variant="outlined" value={email} onChange={(e) => (setEmail(e.target.value))} />
             <TextField id="outlined-basic" label="Password" variant="outlined" value={password} onChange={(e) => (setPassword(e.target.value))} />
             <Button variant="contained" color='primary' onClick={handleLogin}>Login</Button>
+
+            <Box borderTop='1px solid #eee' padding='2rem 0' style={{ margin: '2rem 0' }}>
+                <Link to='/signup' component={Button} fullWidth variant='outlined' >
+                    Sign up
+                </Link>
+            </Box>
         </Form>
     );
 }
