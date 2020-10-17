@@ -44,16 +44,41 @@ const postTransaction = async (req, res) => {
 }
 
 const getAllTransactions = async (req, res) => {
+  const { filter, limit, page } = req.query
+
   const { user_id } = req.headers
   const validationError = validateUserId(user_id)
   if (validationError.error) return res.status(400).json({ message: validationError.error })
 
   try {
-    const transactions = await Transaction.find({ user_id })
+    const transactions = await paginate(Transaction, { filter, limit, page })
     res.json(transactions)
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
+}
+
+const paginate = async (model, { filter, limit, page }) => {
+  page = Number(page) || 1
+  limit = Number(limit) || 20
+
+  const startIndex = (page - 1) * limit
+  const totalPages = Math.ceil((await model.countDocuments()) / limit)
+
+  const res = {}
+  res.totalPages = totalPages
+  res.page = page
+  res.limit = limit
+  res.filter = filter
+
+  let query = {type: filter}
+  if (!filter){
+    query = {}
+  }
+
+  res.results = await model.find(query).skip(startIndex).limit(limit)
+
+  return res
 }
 
 module.exports = { getAllTransactions, postTransaction }
