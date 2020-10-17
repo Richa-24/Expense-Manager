@@ -49,7 +49,9 @@ export const postUserLogin = (payload) => (dispatch) => {
     dispatch(loginRequest(payload))
     return api.post("/user/login", payload)
         .then((res) => {
-            dispatch(loginSuccess(res))
+            console.log(res.data._id)
+            dispatch(loginSuccess(res.data._id))
+            localStorage.setItem("auth", res.data._id)
         })
         .catch((err) => {
             swal("Oops!", "Something went wrong!", "warning")

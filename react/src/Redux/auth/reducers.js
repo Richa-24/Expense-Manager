@@ -3,7 +3,8 @@ import * as actionConstants from './actionTypes'
 const initState = {
     isAuth: false,
     signup: false,
-    isLoading: false
+    isLoading: false,
+    user_id: ""
 }
 
 export default (state = initState, action) => {
@@ -38,7 +39,8 @@ export default (state = initState, action) => {
         case actionConstants.LOGIN_SUCCESS:
             return {
                 ...state,
-                isAuth: true
+                isAuth: true,
+                user_id: action.payload
             }
 
         case actionConstants.LOGIN_FAILURE:
