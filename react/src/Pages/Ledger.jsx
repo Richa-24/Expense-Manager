@@ -2,11 +2,12 @@ import { Box, Button, CircularProgress } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import CustomList from '../Components/CustomList';
 import api from '../utils/api';
+import Pagination from '@material-ui/lab/Pagination';
 
 
 export default function DisabledTabs() {
-  const [mode, setMode] = useState('all')
   const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(false)
   const [transactions, setTransactions] = useState([])
@@ -22,6 +23,7 @@ export default function DisabledTabs() {
       }
     }).then(({ data }) => {
       setLoading(false)
+      setTotalPages(data.totalPages)
       setTransactions(data.results)
     })
       .catch(err => console.log(err.message))
@@ -35,8 +37,14 @@ export default function DisabledTabs() {
         <Button variant='outlined' onClick={() => setFilter('C')} color={filter === 'C' ? 'secondary' : ""} >Credits</Button>
         <Button variant='outlined' onClick={() => setFilter('D')} color={filter === 'D' ? 'secondary' : ""} >Debits</Button>
       </Box>
-     
-      {loading ? <Box margin='2rem 0'> <CircularProgress /> </Box> : <CustomList data={transactions} />}
+
+      {loading ? <Box margin='2rem 0'> <CircularProgress /> </Box> : <>
+        <CustomList data={transactions} />
+        <Box display='flex' justifyContent='center' marginBottom='1rem'>
+          <Pagination count={totalPages} onChange={(e, value) => setPage(Number(value))} page={page} color="primary" />
+        </Box>
+      </>}
+
 
     </Box>
   );
