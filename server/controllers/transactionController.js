@@ -71,8 +71,8 @@ const paginate = async (model, { filter, limit, page }) => {
   res.limit = limit
   res.filter = filter
 
-  let query = {type: filter}
-  if (!filter){
+  let query = { type: filter }
+  if (!filter) {
     query = {}
   }
 
@@ -81,5 +81,23 @@ const paginate = async (model, { filter, limit, page }) => {
   return res
 }
 
-module.exports = { getAllTransactions, postTransaction }
+
+const getSummary = async (req, res) => {
+  const { user_id } = req.headers
+  const validationError = validateUserId(user_id)
+  if (validationError.error) return res.status(400).json({ message: validationError.error })
+
+  try {
+    const totalAmount = (await Transaction.find({ user_id, type: 'C' }, { amount: 1 })).reduce((a, c) => a + c.amount, 0)
+    const expense = (await Transaction.find({ user_id, type: 'D' }, { amount: 1 })).reduce((a, c) => a + c.amount, 0)
+    const balance = totalAmount - expense
+
+    const results = { totalAmount, expense, balance }
+    res.json(results)
+  } catch (err) {
+    res.status(400).json({ message: err.message })
+  }
+}
+
+module.exports = { getAllTransactions, postTransaction, getSummary }
 
